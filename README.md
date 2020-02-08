@@ -1,6 +1,6 @@
-## Flask / SQLAlchemy Simple App
+## Bingo online
 
-This is a simple app using [Flask](http://flask.pocoo.org), [SQLAlchemy](http://www.sqlalchemy.org/) and the connecting [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org) library.
+This is a Bingo system using [Flask](http://flask.pocoo.org), [SQLAlchemy](http://www.sqlalchemy.org/) and the connecting [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org) library.
 
 ### Installing Dependencies
 
