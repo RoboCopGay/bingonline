@@ -1,9 +1,9 @@
-<h3>Add Dessert</h3>
+<h3>Add user</h3>
 
-{% if dessert %}
+{% if user %}
 
-<p><strong>{{dessert.name}}</strong> successfully created! Add another below.</p>
-<p><a href="/">Back to Dessert List</a></p>
+<p><strong>{{user.name}}</strong> successfully created! Add another below.</p>
+<p><a href="/">Back to user List</a></p>
 
 {% endif %}
 
@@ -11,16 +11,23 @@
 <!-- The form action and method correspond to a Flask route -->
 <form action="/add" method="POST">
 
-<label for="name_id">Name</label>
-<input id="name_id" name="name_field" type="text" />
+    <label for="name">name</label>
+    <input type="text" id="name"/>
 
-<label for="price_id">Price</label>
-<input id="price_id" name="price_field" type="text" size="4" />
+    <label for="email">email</label>
+    <input type="text" id="email"/>
 
-<label for="cals_id">Calories</label>
-<input id="cals_id" name="cals_field" type="text" size="4" />
+    <label for="password">password</label>
+    <input type="text" id="password"/>
+
+    <label for="address_id">address_id</label>
+    <input type="text" id="address"/>
+
+    <label for="phone_id">phone</label>
+    <input type="text" id="phone_id"/>
 
 
+    <input type="submit" value="Send">
 <!-- We need a submit button to submit a form! -->
 <input type="submit" value="Add"/>
 

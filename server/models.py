@@ -1,56 +1,55 @@
 from app import db
 
+from hashlib import sha512 as hash
 
-class Dessert(db.Model):
-    # See http://flask-sqlalchemy.pocoo.org/2.0/models/#simple-example
-    # for details on the column types.
 
-    # We always need an id
-    id = db.Column(db.Integer, primary_key=True)
+class Phone(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    ddi = db.Column(db.String(4), default='+55')
+    ddd = db.Column(db.String(3), nullable=False)
+    digits = db.Column(db.String(10), nullable=False)
 
-    # A dessert has a name, a price and some calories:
+    def __repr__(self):
+        return f'<Phone {self.ddi} ({self.ddd}) {self.digits})>'
+
+
+class Address(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    cep = db.Column(db.String(8), nullable=False)
+    city = db.Column(db.String(200), nullable=False)
+    street = db.Column(db.String(200), nullable=False)
+    neighborhood = db.Column(db.String(200), nullable=False)
+
+    def __repr__(self):
+        return f'<Address {self.id}>'
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+
+    username = db.Column(db.String(100))
     name = db.Column(db.String(100))
-    price = db.Column(db.Float)
-    calories = db.Column(db.Integer)
-
-    def __init__(self, name, price, calories):
-        self.name = name
-        self.price = price
-        self.calories = calories
-
-    def calories_per_dollar(self):
-        if self.calories:
-            return self.calories / self.price
+    email = db.Column(db.String(100))
+    password = db.Column(db.String(128))
 
 
-class Menu(db.Model):
+    address_id = db.Column(db.Integer, db.ForeignKey('Address.id'), nullable=False)
+    phone_id = db.Column(db.Integer, db.ForeignKey('Phone.id'), nullable=True)
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
+    address = db.relationship('Address')
+    phone = db.relationship('Phone')
 
-    def __init__(self, name):
-        self.name = name
+    def __repr__(self):
+        return f'<User {self.username}>'
 
 
-def create_dessert(new_name, new_price, new_calories):
-    # Create a dessert with the provided input.
-    # At first, we will trust the user.
+def create_user(name, email, password, address_id, phone_id=None):
+    user = User(name, email, password, address_id, phone_id)
 
-    # This line maps to line 16 above (the Dessert.__init__ method)
-    dessert = Dessert(new_name, new_price, new_calories)
-
-    # Actually add this dessert to the database
-    db.session.add(dessert)
-
-    # Save all pending changes to the database
+    db.session.add(user)
     db.session.commit()
 
-    return dessert
-
+    return user
 
 if __name__ == "__main__":
-
-    # Run this file directly to create the database tables.
-    print("Creating database tables...")
+    print('Creating database...')
     db.create_all()
-    print("Done!")
