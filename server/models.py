@@ -1,7 +1,6 @@
 from app import db
-
+from datetime import datetime
 from hashlib import sha512 as hash
-
 
 class User(db.Model):
     __tablename__ = "User"
@@ -12,6 +11,10 @@ class User(db.Model):
     name = db.Column(db.String(100))
     email = db.Column(db.String(100))
     password = db.Column(db.String(128))
+    creation_date = db.Column(db.DateTime, nullable=False,
+        default=datetime.utcnow)
+    alter_date = db.Column(db.DateTime, nullable=False,
+        default=datetime.utcnow)
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -27,7 +30,9 @@ class Address(db.Model):
     country = db.Column(db.String(200), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
-    user = db.relationship('User')
+    user = db.relationship('User', backref=db.backref(
+        'addresses', lazy=True
+    ))
 
     def __repr__(self):
         return f'<Address {self.id}>'
@@ -41,7 +46,9 @@ class Phone(db.Model):
     digits = db.Column(db.String(10), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
-    user = db.relationship('User')
+    user = db.relationship('User', backref=db.backref(
+        'phones', lazy=True
+    ))
 
     def __repr__(self):
         return f'<Phone {self.ddi} ({self.ddd}) {self.digits})>'
@@ -49,9 +56,7 @@ class Phone(db.Model):
 
 def create_user(name, email, password):
     user = User(name=name, email=email, password=password)
-    address = Address( cep='00000000', city='zero', street='zero', neighborhood='zero', country='zero', user=user)
 
-    db.session.add(address)
     db.session.add(user)
     db.session.commit()
 
