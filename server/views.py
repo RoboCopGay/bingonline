@@ -1,13 +1,13 @@
 from flask import render_template, request
 
-from models import user, create_user
+from models import User, create_user
 from app import app
 
 
 @app.route('/')
 def index():
 
-    users = users.query.all()
+    users = User.query.all()
 
     return render_template('index.html', users=users)
 
@@ -29,8 +29,6 @@ def add():
     name = request.form.get('name')
     email = request.form.get('email')
     password = request.form.get('password')
-    address_id = request.form.get('address')
-    phone_id = request.form.get('phone')
 
-    user = create_user(name, email, password, address_id, phone_id)
+    user = create_user(name=name, email=email, password=password)
     return render_template('add.html', user=user)
