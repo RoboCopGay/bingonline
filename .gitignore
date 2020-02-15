@@ -1,1 +1,6 @@
 .tmux
+.venv
+*cache*
+*.log
+*.pyc
+tmp
