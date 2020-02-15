@@ -1,61 +1,68 @@
-from app import db
-from datetime import datetime
 from hashlib import sha512 as hash
+from random import randint
+from re import search
 
-class User(db.Model):
-    __tablename__ = "User"
+from tables import *
 
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+# Game
+def generate_board():
+    def do_sort():
+        history = []
+        width, height = 5, 5
+        values = [[ 0 for j in range(height)] for i in range(width)]
 
-    # username = db.Column(db.String(100))
-    name = db.Column(db.String(100))
-    email = db.Column(db.String(100))
-    password = db.Column(db.String(128))
-    creation_date = db.Column(db.DateTime, nullable=False,
-        default=datetime.utcnow)
-    alter_date = db.Column(db.DateTime, nullable=False,
-        default=datetime.utcnow)
+        bingo = [
+            [ 1, 15], # B
+            [16, 30], # I
+            [31, 45], # N
+            [46, 60], # G
+            [61, 75]  # O
+        ]
 
-    def __repr__(self):
-        return f'<User {self.email}>'
+        for i in range(width):
+            for j in range(height):
+                sort = randint(bingo[j][0], bingo[j][1])
+                while sort in history:
+                    sort = randint(1, 75)
+                values[i][j] = sort
+                history.append(sort)
+        values[2][2] = 0
+        return values
 
-class Address(db.Model):
-    __tablename__ = "Address"
+    values = do_sort()
+    history = [ b.values for b in Board.query.all()]
+    while values in history:
+        values = do_sort()
+    return values
 
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    cep = db.Column(db.String(8), nullable=False)
-    city = db.Column(db.String(200), nullable=False)
-    street = db.Column(db.String(200), nullable=False)
-    neighborhood = db.Column(db.String(200), nullable=False)
-    country = db.Column(db.String(200), nullable=False)
+def create_board(user, event):
+    board = Board(user=user, event=event)
+    board.values = generate_board()
 
-    user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref(
-        'addresses', lazy=True
-    ))
+    db.session.add(board)
+    db.session.commit()
 
-    def __repr__(self):
-        return f'<Address {self.id}>'
+    return board
 
-class Phone(db.Model):
-    __tablename__ = "Phone"
+# User
+def create_address(cep, number, street, neighborhood, city, state, country):
+    address = Address(
+        cep=cep,
+        city=city,
+        state=state,
+        street=street,
+        number=number,
+        country=country,
+        neighborhood=neighborhood
+    )
 
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    ddi = db.Column(db.String(4), default='+55')
-    ddd = db.Column(db.String(3), nullable=False)
-    digits = db.Column(db.String(10), nullable=False)
+    db.session.add(address)
+    db.session.commit()
 
-    user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref(
-        'phones', lazy=True
-    ))
+    return address
 
-    def __repr__(self):
-        return f'<Phone {self.ddi} ({self.ddd}) {self.digits})>'
-
-
-def create_user(name, email, password):
-    user = User(name=name, email=email, password=password)
+def create_user(name, username, email, password, address):
+    user = User(name=name, username=username, email=email, password=password, address=address)
 
     db.session.add(user)
     db.session.commit()
@@ -63,5 +70,5 @@ def create_user(name, email, password):
     return user
 
 if __name__ == "__main__":
-    print('Creating database...')
+    print('Creating tables of database...')
     db.create_all()
