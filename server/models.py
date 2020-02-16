@@ -36,7 +36,10 @@ def generate_board() -> list:
     return values
 
 def create_board(user:User, event:Event) -> Board:
-    board = Board(user=user, event=event)
+    board = Board(
+        user=user,
+        event=event
+    )
     board.values = generate_board()
 
     db.session.add(board)
@@ -44,7 +47,7 @@ def create_board(user:User, event:Event) -> Board:
 
     return board
 
-def create_event(name:str, description:str = None, date:tuple, fisic_ball:str = False) -> Event:
+def create_event(name:str, date:tuple, description:str = None, fisic_ball:str = False) -> Event:
     year, month, day, hour, minute = date
     event = Event(
         name=name,
@@ -70,8 +73,13 @@ def create_prize(name:str, description:str, event:Event) -> Prize:
 
     return prize
 
-def create_image(alt:str = None, filename:str, mime_type:str, prize:Prize) -> Image:
-    image = Image(alt=alt, filename=filename, mime_type, prize=prize)
+def create_image(filename:str, mime_type:str, prize:Prize, alt:str = None) -> Image:
+    image = Image(
+        alt=alt,
+        filename=filename,
+        mime_type=mime_type,
+        prize=prize
+    )
 
     db.session.add(image)
     db.session.commit()
@@ -97,13 +105,16 @@ def create_address(cep:str, number:str, street:str, neighborhood:str,
     return address
 
 def create_user(name:str, username:str, email:str, password:str, address:Address) -> User:
-    user = User(name=name, username=username, email=email, password=hash(password), address=address)
+    user = User(
+        name=name,
+        username=username,
+        email=email,
+        password=hash(password).hexdigest(),
+        address=address
+    )
 
     db.session.add(user)
     db.session.commit()
 
     return user
 
-if __name__ == "__main__":
-    print(':: Creating tables of database')
-    db.create_all()
