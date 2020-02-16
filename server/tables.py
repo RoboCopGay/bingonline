@@ -34,6 +34,7 @@ class Address(db.Model):
     number = db.Column(db.Text, nullable=False)
     street = db.Column(db.Text, nullable=False)
     country = db.Column(db.Text, nullable=False)
+    complement = db.Column(db.Text, nullable=True)
     neighborhood = db.Column(db.Text, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
@@ -50,7 +51,7 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
 
     name = db.Column(db.Text, nullable=False)
-    description = db.Column(db.Text, nullable=True)
+    description = db.Column(db.Text)
     fisic_ball = db.Column(db.Boolean, default=False)
     date = db.Column(db.DateTime, nullable=False)
     creation_date = db.Column(db.DateTime, nullable=False,
