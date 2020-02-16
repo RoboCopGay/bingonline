@@ -21,6 +21,9 @@ class User(db.Model):
     def __repr__(self):
         return f'<User {self.email}>'
 
+    def check_pass(self, passwd):
+        return True if hash(passwd)==self.password else False
+
 class Address(db.Model):
     __tablename__ = "Address"
 
@@ -48,9 +51,8 @@ class Event(db.Model):
 
     name = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=True)
-    sorted = db.Column
-    date = db.Column(db.DateTime, nullable=False,
-        default=datetime.utcnow)
+    fisic_ball = db.Column(db.Boolean, default=False)
+    date = db.Column(db.DateTime, nullable=False)
     creation_date = db.Column(db.DateTime, nullable=False,
         default=datetime.utcnow)
 
