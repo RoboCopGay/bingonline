@@ -18,11 +18,16 @@ class User(db.Model):
     alter_date = db.Column(db.DateTime, nullable=False,
         default=datetime.utcnow)
 
+    address_id = db.Column(db.Integer, db.ForeignKey('Address.id'), nullable=False)
+    address = db.relationship('Address', backref=db.backref(
+        'residents', lazy=True
+    ))
+
     def __repr__(self):
         return f'<User {self.email}>'
 
     def check_pass(self, passwd):
-        return True if hash(passwd)==self.password else False
+        return True if hash(passwd).hexdigest()==self.password else False
 
 class Address(db.Model):
     __tablename__ = "Address"
@@ -36,11 +41,6 @@ class Address(db.Model):
     country = db.Column(db.Text, nullable=False)
     complement = db.Column(db.Text, nullable=True)
     neighborhood = db.Column(db.Text, nullable=False)
-
-    user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref(
-        'addresses', lazy=True
-    ))
 
     def __repr__(self):
         return f'<Address {self.id}>'
