@@ -1,4 +1,5 @@
 from hashlib import sha512 as hash
+from datetime import strptime
 from random import randint
 from re import search
 
@@ -44,6 +45,40 @@ def create_board(user, event):
 
     return board
 
+def create_event(name, description, date, fisic_ball):
+    event = Event(
+        name=name,
+        description=description,
+        date=strptime(
+            date, '%d/%m/%y %H:%M:%S'),
+        fisic_ball=fisic_ball
+    )
+
+    db.session.add(event)
+    db.session.commit()
+
+    return event
+
+def create_prize(name, description, event):
+    prize = Prize(
+        name=name,
+        description=description,
+        event=event
+    )
+
+    db.session.add(prize)
+    db.session.commit()
+
+    return prize
+
+def create_image(alt, filename, mime_type, prize):
+    image = Image(alt=alt, filename=filename, mime_type, prize=prize)
+
+    db.session.add(image)
+    db.session.commit()
+
+    return image
+
 # User
 def create_address(cep, number, street, neighborhood, city, state, country):
     address = Address(
@@ -62,7 +97,7 @@ def create_address(cep, number, street, neighborhood, city, state, country):
     return address
 
 def create_user(name, username, email, password, address):
-    user = User(name=name, username=username, email=email, password=password, address=address)
+    user = User(name=name, username=username, email=email, password=hash(password), address=address)
 
     db.session.add(user)
     db.session.commit()
