@@ -1,12 +1,11 @@
 from hashlib import sha512 as hash
-from datetime import strptime
 from random import randint
 from re import search
 
 from tables import *
 
 # Game
-def generate_board():
+def generate_board() -> list:
     def do_sort():
         history = []
         width, height = 5, 5
@@ -36,7 +35,7 @@ def generate_board():
         values = do_sort()
     return values
 
-def create_board(user, event):
+def create_board(user:User, event:Event) -> Board:
     board = Board(user=user, event=event)
     board.values = generate_board()
 
@@ -45,12 +44,12 @@ def create_board(user, event):
 
     return board
 
-def create_event(name, description, date, fisic_ball):
+def create_event(name:str, description:str = None, date:tuple, fisic_ball:str = False) -> Event:
+    year, month, day, hour, minute = date
     event = Event(
         name=name,
         description=description,
-        date=strptime(
-            date, '%d/%m/%y %H:%M:%S'),
+        date=datetime(year, month, day, hour, minute),
         fisic_ball=fisic_ball
     )
 
@@ -59,7 +58,7 @@ def create_event(name, description, date, fisic_ball):
 
     return event
 
-def create_prize(name, description, event):
+def create_prize(name:str, description:str, event:Event) -> Prize:
     prize = Prize(
         name=name,
         description=description,
@@ -71,7 +70,7 @@ def create_prize(name, description, event):
 
     return prize
 
-def create_image(alt, filename, mime_type, prize):
+def create_image(alt:str = None, filename:str, mime_type:str, prize:Prize) -> Image:
     image = Image(alt=alt, filename=filename, mime_type, prize=prize)
 
     db.session.add(image)
@@ -80,7 +79,8 @@ def create_image(alt, filename, mime_type, prize):
     return image
 
 # User
-def create_address(cep, number, street, neighborhood, city, state, country):
+def create_address(cep:str, number:str, street:str, neighborhood:str,
+                   city:str, state:str, country:str, complement:str = None) -> Address:
     address = Address(
         cep=cep,
         city=city,
@@ -96,7 +96,7 @@ def create_address(cep, number, street, neighborhood, city, state, country):
 
     return address
 
-def create_user(name, username, email, password, address):
+def create_user(name:str, username:str, email:str, password:str, address:Address) -> User:
     user = User(name=name, username=username, email=email, password=hash(password), address=address)
 
     db.session.add(user)
@@ -105,5 +105,5 @@ def create_user(name, username, email, password, address):
     return user
 
 if __name__ == "__main__":
-    print('Creating tables of database...')
+    print(':: Creating tables of database')
     db.create_all()
