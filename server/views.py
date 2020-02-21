@@ -1,34 +1,26 @@
-from flask import render_template, request
+from flask import render_template, request, jsonify
 
-from models import User, create_user
+from models import *
 from app import app
 
-
-@app.route('/')
-def index():
-
-    users = User.query.all()
-
-    return render_template('index.html', users=users)
-
-
-@app.route('/add', methods=['GET', 'POST'])
-def add():
-
-    if request.method == 'GET':
-        return render_template('add.html')
-
-    # Because we 'returned' for a 'GET', if we get to this next bit, we must
-    # have received a POST
-
-    # Get the incoming data from the request.form dictionary.
-    # The values on the right, inside get(), correspond to the 'name'
-    # values in the HTML form that was submitted.
-
-    # user_price = request.form.get('price_field')
-    name = request.form.get('name')
-    email = request.form.get('email')
-    password = request.form.get('password')
-
-    user = create_user(name=name, email=email, password=password)
-    return render_template('add.html', user=user)
+@app.route('/user/add', methods = ['POST', 'GET'])
+def add_user():
+    if request.method == 'POST':
+        create_user(
+            name = request.json['name'].strip(),
+            username = request.json['username'].strip(),
+            email = request.json['email'].strip(),
+            password = bytes(request.json['password'].strip(), 'utf-8'),
+            address = create_address(
+                cep = request.json['address']['cep'],
+                city = request.json['address']['city'],
+                state = request.json['address']['state'],
+                number = request.json['address']['number'],
+                street = request.json['address']['street'],
+                country = request.json['address']['country'],
+                neighborhood = request.json['address']['neighborhood']
+            )
+        )
+        return jsonify(request.json)
+    elif request.method == 'GET':
+        return '...'
