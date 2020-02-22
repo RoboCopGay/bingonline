@@ -22,7 +22,7 @@ class User(db.Model):
     address = db.Column(db.JSON, nullable=False)
 
     def __repr__(self):
-        return f'<User {self.email}>'
+        return f'<User {self.username}>'
 
     def check_pass(self, passwd):
         return True if hash(passwd).hexdigest()==self.password else False
@@ -39,6 +39,9 @@ class Event(db.Model):
     creation_date = db.Column(db.DateTime, nullable=False,
         default=datetime.utcnow)
 
+    def __repr__(self):
+        return f'<Event {self.name}>'
+
 class Prize(db.Model):
     __tablename__ = "Prize"
 
@@ -51,6 +54,9 @@ class Prize(db.Model):
     event = db.relationship('Event', backref=db.backref(
         'prizes', lazy=True
     ))
+
+    def __repr__(self):
+        return f'<Prize {self.name}>'
 
 class Board(db.Model):
     __tablename__ = "Board"
@@ -67,6 +73,9 @@ class Board(db.Model):
     event = db.relationship('Event', backref=db.backref(
         'boards', lazy=True
     ))
+
+    def __repr__(self):
+        return f'<Board {self.id}>'
 
 def generate_board() -> list:
     def do_sort():
