@@ -1,26 +1,28 @@
-from flask import render_template, request, jsonify
+from flask import request, jsonify, redirect, abort
 
 from models import *
 from app import app
 
-@app.route('/user/add', methods = ['POST', 'GET'])
-def add_user():
+@app.route('/user', methods = ['POST', 'DELETE', 'PUT'])
+def user():
     if request.method == 'POST':
         create_user(
             name = request.json['name'].strip(),
             username = request.json['username'].strip(),
             email = request.json['email'].strip(),
             password = bytes(request.json['password'].strip(), 'utf-8'),
-            address = create_address(
-                cep = request.json['address']['cep'],
-                city = request.json['address']['city'],
-                state = request.json['address']['state'],
-                number = request.json['address']['number'],
-                street = request.json['address']['street'],
-                country = request.json['address']['country'],
-                neighborhood = request.json['address']['neighborhood']
-            )
+            address = reguest.json['address']
         )
         return jsonify(request.json)
-    elif request.method == 'GET':
-        return '...'
+
+@app.route('/user/<username>')
+def get_user(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify(dict(
+            name = user.name,
+            username = user.username,
+            email = user.email
+        ))
+    else:
+        abort(404)
