@@ -18,32 +18,14 @@ class User(db.Model):
     alter_date = db.Column(db.DateTime, nullable=False,
         default=datetime.utcnow)
 
-    address_id = db.Column(db.Integer, db.ForeignKey('Address.id'), nullable=False)
-    address = db.relationship('Address', backref=db.backref(
-        'residents', lazy=True
-    ))
+    perfil = db.Column(db.String(128), nullable=True)
+    address = db.Column(db.JSON, nullable=False)
 
     def __repr__(self):
         return f'<User {self.email}>'
 
     def check_pass(self, passwd):
         return True if hash(passwd).hexdigest()==self.password else False
-
-class Address(db.Model):
-    __tablename__ = "Address"
-
-    id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
-    cep = db.Column(db.String(8), nullable=False)
-    city = db.Column(db.Text, nullable=False)
-    state = db.Column(db.Text, nullable=False)
-    number = db.Column(db.Text, nullable=False)
-    street = db.Column(db.Text, nullable=False)
-    country = db.Column(db.Text, nullable=False)
-    complement = db.Column(db.Text, nullable=True)
-    neighborhood = db.Column(db.Text, nullable=False)
-
-    def __repr__(self):
-        return f'<Address {self.id}>'
 
 class Event(db.Model):
     __tablename__ = "Event"
@@ -64,23 +46,10 @@ class Prize(db.Model):
     name = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=True)
 
+    images = db.Column(db.JSON, nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('Event.id'), nullable=False)
     event = db.relationship('Event', backref=db.backref(
         'prizes', lazy=True
-    ))
-
-class Image(db.Model):
-    __tablename__ = "Image"
-
-    id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
-
-    alt = db.Column(db.Text, nullable=True)
-    filename = db.Column(db.String(128), nullable=False)
-    mime_type = db.Column(db.Text, nullable=False)
-
-    prize_id = db.Column(db.Integer, db.ForeignKey('Prize.id'), nullable=False)
-    prize = db.relationship('Prize', backref=db.backref(
-        'images', lazy=True
     ))
 
 class Board(db.Model):
@@ -99,3 +68,32 @@ class Board(db.Model):
         'boards', lazy=True
     ))
 
+def generate_board() -> list:
+    def do_sort():
+        history = []
+        width, height = 5, 5
+        values = [[ 0 for j in range(height)] for i in range(width)]
+
+        bingo = [
+            [ 1, 15], # B
+            [16, 30], # I
+            [31, 45], # N
+            [46, 60], # G
+            [61, 75]  # O
+        ]
+
+        for i in range(width):
+            for j in range(height):
+                sort = randint(bingo[j][0], bingo[j][1])
+                while sort in history:
+                    sort = randint(1, 75)
+                values[i][j] = sort
+                history.append(sort)
+        values[2][2] = 0
+        return values
+
+    values = do_sort()
+    history = [ b.values for b in Board.query.all()]
+    while values in history:
+        values = do_sort()
+    return values
