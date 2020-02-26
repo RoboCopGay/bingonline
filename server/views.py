@@ -3,7 +3,7 @@ from flask import request, jsonify, redirect, abort
 from models import *
 from app import app
 
-@app.route('/user', methods = ['POST', 'DELETE', 'PUT'])
+@app.route('/user', methods = ['POST'])
 def user():
     if request.method == 'POST':
         create_user(
