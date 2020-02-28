@@ -79,7 +79,7 @@ def send_confirmation_mail(data):
 Hi {data['name']}!
 
 Click in this link to activate your account on "{url_for('index', _external=True)}":
-{url_for('index', _external=True)}/user/confirm/{token}
+{url_for('index', _external=True)}/user/confirm_email/{token}
 
 Thank you!
     '''.strip()
@@ -87,7 +87,7 @@ Thank you!
 <h1>Hi {data['name']}</h1>
 <br/>
 <p>click in this link to activate your account on "<a href="{url_for('index', _external=True)}">bingonline</a>"</a>:
-<p><a id='button' href="{url_for('index', _external=True)}/user/confirm/{token}"><strong>Activate</strong></a></p>
+<p><a id='button' href="{url_for('index', _external=True)}/user/confirm_email/{token}"><strong>Activate</strong></a></p>
 <br/>
 <p>Thank you!</p>
     '''.strip()

@@ -26,10 +26,9 @@ def user():
         'data': request.json
     })
 
-@app.route('/user/confirm/<token>/')
+@app.route('/user/confirm_email/<token>/')
 def confirm_email(token):
     data = confirm_token(token)
-    print(data)
     if data:
         user = create_user(
             username = data['username'],
