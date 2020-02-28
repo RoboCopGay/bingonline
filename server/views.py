@@ -1,21 +1,62 @@
 from flask import request, jsonify, redirect, abort
+from mailutil import *
 
 from models import *
 from app import app
 
-@app.route('/user', methods = ['POST'])
-def user():
-    if request.method == 'POST':
-        create_user(
-            name = request.json['name'].strip(),
-            username = request.json['username'].strip(),
-            email = request.json['email'].strip(),
-            password = bytes(request.json['password'].strip(), 'utf-8'),
-            address = reguest.json['address']
-        )
-        return jsonify(request.json)
+@app.route('/')
+def index():
+    return jsonify({
+                'type':'sucess',
+                'data':'It\'s working!'
+            })
 
-@app.route('/user/<username>')
+@app.route('/user/', methods = ['POST'])
+def user():
+    email = request.json['email'].strip()
+    if check_email_validation(email):
+        send_confirmation_mail(request.json)
+    else:
+        return jsonify({
+            'type':'error',
+            'data':'email is not valid!'
+        })
+    return jsonify({
+        'type': 'sucess',
+        'data': request.json
+    })
+
+@app.route('/user/confirm/<token>/')
+def confirm_email(token):
+    data = confirm_token(token)
+    print(data)
+    if data:
+        user = create_user(
+            username = data['username'],
+            name = data['name'],
+            email = data['email'],
+            password = data['password'],
+            address = data['address']
+        )
+        if user:
+            db.session.add(user)
+            db.session.commit()
+        else:
+            return jsonify({
+                    'type':'error',
+                    'data':'USER is FUCKED!!'
+            })
+    else:
+        return jsonify({
+                'type':'error',
+                'data':'DATA is FUCKED!!'
+        })
+    return jsonify({
+            'type':'sucess',
+            'data':'It\'s working!'
+    })
+
+@app.route('/user/<username>/')
 def get_user(username):
     user = User.query.filter_by(username=username).first()
     if user:
