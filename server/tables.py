@@ -25,7 +25,7 @@ class User(db.Model):
         return f'<User {self.username}>'
 
     def check_pass(self, passwd):
-        return True if hash(passwd).hexdigest()==self.password else False
+        return True if hash(bytes(passwd, 'utf-8')).hexdigest()==self.password else False
 
 class Event(db.Model):
     __tablename__ = "Event"

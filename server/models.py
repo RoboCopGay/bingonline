@@ -50,7 +50,7 @@ def create_user(name:str, username:str, email:str, password:str, address:dict) -
         name=name,
         username=username,
         email=email,
-        password=hash(password).hexdigest(),
+        password=hash(bytes(password, 'utf-8')).hexdigest(),
         address=address
     )
 
