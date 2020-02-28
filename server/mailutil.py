@@ -84,22 +84,6 @@ Click in this link to activate your account on "{url_for('index', _external=True
 Thank you!
     '''.strip()
     html = f'''
-<style>
-#button {{
-    display: block;
-    padding: 5px;
-    background: DDD;
-    box-shadow: 1px 2px 3px rgba(0,0,0,0.3);
-}}
-
-h1 {{
-    font-size: 30pt;
-}}
-
-p {{
-    font-size: 15pt;
-}}
-</style>
 <h1>Hi {data['name']}</h1>
 <br/>
 <p>click in this link to activate your account on "<a href="{url_for('index', _external=True)}">bingonline</a>"</a>:
