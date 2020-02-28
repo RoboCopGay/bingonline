@@ -4,12 +4,15 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pynvim = "*"
 
 [packages]
 flask = "*"
 flask-sqlalchemy = "*"
 python-dotenv = "*"
-pynvim = "*"
+validate-email = "*"
+pyyaml = "*"
+itsdangerous = "*"
 
 [requires]
 python_version = "3.8"
