@@ -1,4 +1,3 @@
-from hashlib import sha512 as hash
 from random import randint
 from re import search
 

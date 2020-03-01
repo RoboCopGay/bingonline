@@ -1,5 +1,6 @@
 from app import db
 from datetime import datetime
+from hashlib import sha512 as hash
 
 class User(db.Model):
     __tablename__ = "User"
@@ -24,8 +25,9 @@ class User(db.Model):
     def __repr__(self):
         return f'<User {self.username}>'
 
-    def check_pass(self, passwd):
-        return True if hash(bytes(passwd, 'utf-8')).hexdigest()==self.password else False
+    def check_pass(self, passwd:str):
+        passhash = hash(bytes(passwd, 'utf-8')).hexdigest()
+        return True if passhash==self.password else False
 
 class Event(db.Model):
     __tablename__ = "Event"
