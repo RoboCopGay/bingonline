@@ -14,7 +14,7 @@ users = [
             'country': 'do cão',
             'neighborhood': 'inferno',
         },
-        'password': b'joao123'
+        'password': 'joao123'
     },
     {
         'name': 'maria',
@@ -29,21 +29,21 @@ users = [
             'country': 'do cão',
             'neighborhood': 'lula molusco',
         },
-        'password': b'maria123'
+        'password': 'maria123'
     },
     {
         'name': 'joana',
         'username': 'joana',
         'email': 'joana@g.com',
         'address': 1,
-        'password': b'morteaoshomens123'
+        'password': 'morteaoshomens123'
     },
     {
         'name': 'joao roberto',
         'username': 'joaobeto',
         'email': 'joaobeto@docao.com',
         'address': 2,
-        'password': b'joao123'
+        'password': 'joao123'
     },
     {
         'name': 'gabriel',
@@ -58,7 +58,7 @@ users = [
             'country': 'do cão',
             'neighborhood': 'lula molusco',
         },
-        'password': b'g4b1234'
+        'password': 'g4b1234'
     },
     {
         'name': 'ramires',
@@ -73,7 +73,22 @@ users = [
             'country': 'do cão',
             'neighborhood': 'fi do capeta',
         },
-        'password': b'opirocudo'
+        'password': 'opirocudo'
+    },
+    {
+        "name": "RoboCopGay daSilva",
+        "username": "robocopgay",
+        "email": "yaks.robocopgay@gmail.com",
+        "password": "joao123",
+        "address": {
+            "cep": "99444488",
+            "city": "belo boga",
+            "state": "fim de mundo",
+            "number": "75",
+            "street": "joana",
+            "country": "do cão",
+            "neighborhood": "fi do capeta"
+        }
     }
 ]
 
