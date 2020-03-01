@@ -7,8 +7,8 @@ from app import app
 @app.route('/')
 def index():
     return jsonify({
-                'type':'sucess',
-                'data':'It\'s working!'
+                'type': 'sucess',
+                'data': 'It\'s working!'
             })
 
 @app.route('/user/', methods = ['POST'])
@@ -18,12 +18,12 @@ def user():
         send_confirmation_mail(request.json)
     else:
         return jsonify({
-            'type':'error',
-            'data':'email is not valid!'
-        })
+            'type': 'error',
+            'data': 'email is not valid!'
+        }), 500
     return jsonify({
-        'type': 'sucess',
-        'data': request.json
+        'type':  'sucess',
+        'data':  request.json
     })
 
 @app.route('/user/confirm_email/<token>/')
@@ -42,17 +42,17 @@ def confirm_email(token):
             db.session.commit()
         else:
             return jsonify({
-                    'type':'error',
-                    'data':'USER is FUCKED!!'
-            })
+                    'type': 'error',
+                    'data': 'not did possible to create user!!'
+            }), 500
     else:
         return jsonify({
-                'type':'error',
-                'data':'DATA is FUCKED!!'
-        })
+                'type': 'error',
+                'data': 'token is expired!!'
+        }), 500
     return jsonify({
-            'type':'sucess',
-            'data':'It\'s working!'
+            'type': 'sucess',
+            'data': 'it\'s working!'
     })
 
 @app.route('/user/<username>/')
@@ -65,4 +65,7 @@ def get_user(username):
             email = user.email
         ))
     else:
-        abort(404)
+        return jsonify({
+            'type': 'error',
+            'data': 'user not found!!'
+        }), 404
