@@ -17,13 +17,14 @@ def create_board(user:User, event:Event) -> Board:
 
     return board
 
-def create_event(name:str, date:tuple, description:str = None, fisic_ball:str = False) -> Event:
+def create_event(name:str, date:tuple, owner:User, description:str = None, fisic_ball:str = False) -> Event:
     year, month, day, hour, minute = date
     event = Event(
         name=name,
         description=description,
         date=datetime(year, month, day, hour, minute),
-        fisic_ball=fisic_ball
+        fisic_ball=fisic_ball,
+        owner=owner
     )
 
     db.session.add(event)

@@ -38,6 +38,10 @@ class Event(db.Model):
     date = db.Column(db.DateTime, nullable=False)
     creation_date = db.Column(db.DateTime, nullable=False,
         default=datetime.utcnow)
+    owner_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
+    owner = db.relationship('User', backref=db.backref(
+        'events', lazy=True
+    ))
 
     def __repr__(self):
         return f'<Event {self.name}>'
