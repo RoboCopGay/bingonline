@@ -47,16 +47,16 @@ def check_email_validation(email):
 
 
 def send_mail(email, template):
-
     from yaml import safe_load as yml
-    config = yml('email.yml')
+    config = yml(open('email.yml').read())
 
+    print(config)
     password = config['password']
     _from = config['email']
     _to  = email
 
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = template["suject"]
+    msg['Subject'] = template["subject"]
     msg['From'] = _from
     msg['To'] = _to
 
@@ -74,12 +74,13 @@ def send_mail(email, template):
 
 def send_confirmation_mail(data):
 
+    print(data)
     token = generate_confirmation_token(data)
     text = f'''
 Hi {data['name']}!
 
 Click in this link to activate your account on "{url_for('index', _external=True)}":
-{url_for('index', _external=True)}/user/confirm_email/{token}
+{url_for('index', _external=True)}user/?email_token={token}
 
 Thank you!
     '''.strip()
@@ -87,13 +88,13 @@ Thank you!
 <h1>Hi {data['name']}</h1>
 <br/>
 <p>click in this link to activate your account on "<a href="{url_for('index', _external=True)}">bingonline</a>"</a>:
-<p><a id='button' href="{url_for('index', _external=True)}/user/confirm_email/{token}"><strong>Activate</strong></a></p>
+<p><a id='button' href="{url_for('index', _external=True)}user/?email_token={token}"><strong>Activate</strong></a></p>
 <br/>
 <p>Thank you!</p>
     '''.strip()
 
     send_mail(data['email'], {
-        'suject': 'Confirm your email to create the account',
+        'subject': 'Confirm your email to create the account',
         'text': text,
         'html': html
     })
