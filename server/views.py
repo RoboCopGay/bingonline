@@ -17,15 +17,15 @@ def index():
 
 @app.route('/user/', methods = ['POST'])
 def user():
-    return pages.user.user(request)
+    return pages.user.user()
 
 @app.route('/user/', methods = ['GET'])
 def confirm_user_email():
-    return pages.user.confirm_user_email(request)
+    return pages.user.confirm_user_email()
 
 @app.route('/user/<username>/')
 def get_user(username):
-    return pages.user.get_user(request, username)
+    return pages.user.get_user(username)
 
 # Event section
 

@@ -1,9 +1,9 @@
-from flask import jsonify, redirect, make_response
+from flask import request, jsonify, redirect, make_response
 
 from .models import *
 from mailbox import *
 
-def user(request):
+def user():
     data = request.json['data']
     if request.json['type'] == 'create':
         email = data['email'].strip()
@@ -63,7 +63,7 @@ def user(request):
                 'data': 'No user credentials (password) on request'
             }), 500
 
-def confirm_user_email(request):
+def confirm_user_email():
     token = request.args.get('email_token', default=False, type=str)
 
     if token:
@@ -100,7 +100,7 @@ def confirm_user_email(request):
             }
     })
 
-def get_user(request, username):
+def get_user(username):
     user = User.query.filter_by(username=username).first()
     if user:
         return jsonify(dict(
