@@ -1,7 +1,7 @@
 from flask import request, jsonify, redirect, make_response
 from app import app
 
-from pages.models import *
+from database.models import *
 from mailbox import *
 
 import pages.user

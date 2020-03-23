@@ -1,4 +1,4 @@
-from pages.models import *
+from database.models import *
 from os import system as e
 e('clear')
 

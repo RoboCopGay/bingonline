@@ -1,6 +1,6 @@
 from flask import request, jsonify, redirect, make_response
 
-from .models import *
+from database.models import *
 from mailbox import *
 
 def user():

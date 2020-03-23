@@ -1,4 +1,4 @@
-from pages.models import *
+from database.models import *
 
 if __name__ == "__main__":
     print(':: Creating tables of database')

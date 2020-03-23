@@ -1,4 +1,4 @@
-from pages.models import *
+from database.models import *
 from sys import argv as a
 
 j = User.query.first()
