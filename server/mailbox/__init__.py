@@ -14,7 +14,6 @@ MAIL_SERVER = 'smtp.gmail.com:587'
 
 def generate_confirmation_token(data):
     serializer = URLSafeTimedSerializer( SECRET_KEY )
-    print('serializer', serializer)
     return serializer.dumps(data, salt=SALT)
 
 
@@ -29,16 +28,12 @@ def confirm_token(token, expiration=3600):
 
 
 def check_email_validation(email):
-
-    print('email', email)
-
     # valid = validate_email(email, verify=True)
     # verify option is for checking if that email exists
     # default is False
     # default just examine wether the input email format is correct
 
     valid = validate_email(email)
-    print('valid', valid)
     return valid
 
 
@@ -46,7 +41,6 @@ def send_mail(email, template):
     from yaml import safe_load as yml
     config = yml(open('email.yml').read())
 
-    print(config)
     password = config['password']
     _from = config['email']
     _to  = email
@@ -70,7 +64,6 @@ def send_mail(email, template):
 
 def send_confirmation_mail(data):
 
-    print(data)
     token = generate_confirmation_token(data)
     text = f'''
 Hi {data['name']}!
