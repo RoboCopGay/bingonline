@@ -1,7 +1,7 @@
 from random import randint
 from re import search
 
-from tables import *
+from .tables import *
 
 # Game
 def create_board(user:User, event:Event) -> Board:

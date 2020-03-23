@@ -1,7 +1,3 @@
-'''
-        function tools for email validation
-'''
-
 import smtplib
 from email.mime.text import MIMEText
 from validate_email import validate_email
