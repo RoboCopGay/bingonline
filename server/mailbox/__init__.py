@@ -6,10 +6,11 @@ from email.mime.multipart import MIMEMultipart
 from itsdangerous import URLSafeTimedSerializer
 from flask import Flask, url_for, render_template
 
+from config import config
 
-SECRET_KEY = 'my_secret_key'
-SALT = 'my_password_salt'
-MAIL_SERVER = 'smtp.gmail.com:587'
+SECRET_KEY = config.SECRET_KEY
+SALT = config.SALT
+MAIL_SERVER = config.MAIL_SERVER
 
 
 def generate_confirmation_token(data):
@@ -38,11 +39,8 @@ def check_email_validation(email):
 
 
 def send_mail(email, template):
-    from yaml import safe_load as yml
-    config = yml(open('email.yml').read())
-
-    password = config['password']
-    _from = config['email']
+    password = config.EMAIL_PASS
+    _from = config.EMAIL
     _to  = email
 
     msg = MIMEMultipart('alternative')
