@@ -1,4 +1,5 @@
 *.pyc
 *.lock
 *.db
-email.yml
+config.yml
+.env
