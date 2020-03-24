@@ -1,0 +1,9 @@
+# flask config
+'DB_PATH': "database.db",
+'SECRET_KEY': '<secret_key>',
+
+# mailbox config
+'EMAIL': '<email>',
+'EMAIL_PASS': '<password>',
+'SALT': '<salt_password>',
+'MAIL_SERVER': '<smtp>:<port>'
