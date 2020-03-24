@@ -9,15 +9,12 @@ path = env['BINGONLINE_CONFIG'] if 'BINGONLINE_CONFIG' in env else env['HOME']+'
 config = yml(path)
 config = _Conf(config) if type(config)==dict else {
     # flask config
-    'FLASK_APP': "app.py",
-    'FLASK_ENV': "development",
-    'FLASK_DEBUG': 1,
     'DB_PATH': "database.db",
+    'SECRET_KEY': '<secret_key>',
 
     # mailbox config
     'EMAIL': '<email>',
-    'password': '<password>',
-    'SECRET_KEY': '<secret_key>',
+    'EMAIL_PASS': '<password>',
     'SALT': '<salt_password>',
     'MAIL_SERVER': '<smtp>:<port>'
 }
