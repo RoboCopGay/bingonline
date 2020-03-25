@@ -6,7 +6,7 @@ from app import app
 from database.models import *
 from mailbox import *
 
-import pages.user
+import pages.user, pages.event
 
 # Index
 @app.route('/')
@@ -36,10 +36,6 @@ def get_user(username):
 
 
 # Event section
-@app.route('/user/<username>/event/', methods=['POST', 'GET'])
+@app.route('/event/<username>/', methods=['POST', 'GET'])
 def event(username):
-    if session.get('user'):
-        return pages.event.event(username)
-    else:
-        session['login_req'] = request.json
-        return redirect(url_for('user'))
+    return pages.event.event(username)
