@@ -7,9 +7,9 @@ class _Conf:
 
 path = env['BINGONLINE_CONFIG'] if 'BINGONLINE_CONFIG' in env else env['HOME']+'/.config/bingonline.yml'
 config = yml(path)
-config = _Conf(config) if type(config)==dict else {
+config = _Conf(config) if type(config)==dict else _Conf({
     # flask config
-    'DB_PATH': "database.db",
+    'DB_PATH': "sqlite:///database.db",
     'SECRET_KEY': '<secret_key>',
 
     # mailbox config
@@ -17,5 +17,4 @@ config = _Conf(config) if type(config)==dict else {
     'EMAIL_PASS': '<password>',
     'SALT': '<salt_password>',
     'MAIL_SERVER': '<smtp>:<port>'
-}
-print(config.FLASK_APP)
+})
