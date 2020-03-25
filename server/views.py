@@ -17,14 +17,18 @@ def index():
             })
 
 
-# User section
-@app.route('/user/', methods = ['POST'])
-def user():
-    return pages.user.user()
 
-@app.route('/user/', methods = ['GET'])
-def confirm_user_email():
-    return pages.user.confirm_user_email()
+# User section
+@app.route('/user/', methods = ['POST', 'GET'])
+def user():
+    if request.method == 'POST':
+        return pages.user.user()
+    else:
+        token = request.args.get('email_token', default=False, type=str)
+        if token:
+            return pages.user.confirm_user_email(token)
+        else:
+            return pages.user.user()
 
 @app.route('/user/<username>/')
 def get_user(username):
