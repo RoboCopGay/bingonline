@@ -65,6 +65,19 @@ def user():
                 'type': 'error',
                 'data': 'No user credentials (password) on request'
             }), 500
+    elif request.json['type'] == 'logout':
+        user_logged = session.get('user').username if session.get('user') else None
+        if user_logged:
+            session.pop('user', None)
+            return jsonify({
+                'type': 'sucess',
+                'data': f'User {user_logged} are disconnected!'
+            })
+        else:
+            return jsonify({
+                'type': 'error',
+                'data': 'No logged user!'
+            }), 500
 
 def confirm_user_email():
     token = request.args.get('email_token', default=False, type=str)
