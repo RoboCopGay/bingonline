@@ -1,4 +1,6 @@
 from flask import request, jsonify, redirect, make_response
+
+from pages.user import session
 from app import app
 
 from database.models import *
@@ -27,29 +29,12 @@ def confirm_user_email():
 def get_user(username):
     return pages.user.get_user(username)
 
-# Event section
 
+# Event section
 @app.route('/user/<username>/event/', methods=['POST', 'GET'])
 def event(username):
-    user = User.query.filter_by(username=username).first()
-    if request.method == 'GET':
-        if user:
-            return jsonify({
-                'type': 'sucess',
-                'data': [ dict(
-                    name=e.name,
-                    description=e.description,
-                    date=str(e.date),
-                    fisic_ball=e.fisic_ball
-                ) for e in Event.query.filter_by(owner=user).all()]
-            })
-        else:
-            return jsonify({
-                'type': 'error',
-                'data': 'user not found!!'
-            }), 404
-    elif request.method == 'POST':
-        print(request.cookies)
-        log = request.cookies.get('bingonline.logged')
-        log_user = request.cookies.get('bingonline.username')
-        return 'ok!'
+    if session.get('user'):
+        return pages.event.event(username)
+    else:
+        session['login_req'] = request.json
+        return redirect(url_for('user'))

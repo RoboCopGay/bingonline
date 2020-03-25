@@ -3,6 +3,8 @@ from flask import request, jsonify, redirect, make_response
 from database.models import *
 from mailbox import *
 
+from session import session
+
 def user():
     data = request.json['data']
     if request.json['type'] == 'create':
@@ -32,7 +34,7 @@ def user():
             'data': 'login realized!'
         }))
 
-        if request.cookies.get('bingonline.logged'):
+        if session.get('user'):
             return response
 
         if 'password' in data:
@@ -48,6 +50,7 @@ def user():
                     'data': 'No user credentials (username or email) on request'
                 }), 500
 
+            session['user'] = user
             if user:
                 if user.check_pass(data['password']):
                     return response
