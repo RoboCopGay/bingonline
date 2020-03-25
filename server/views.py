@@ -8,6 +8,7 @@ from mailbox import *
 
 import pages.user
 
+# Index
 @app.route('/')
 def index():
     return jsonify({
@@ -15,8 +16,8 @@ def index():
                 'data': 'It\'s working!'
             })
 
-# User section
 
+# User section
 @app.route('/user/', methods = ['POST'])
 def user():
     return pages.user.user()

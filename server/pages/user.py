@@ -111,7 +111,7 @@ def confirm_user_email():
             'type': 'sucess',
             'data': {
                 'username': data['username'],
-                'name': data['username'],
+                'name': data['name'],
                 'email': data['email']
             }
     })
