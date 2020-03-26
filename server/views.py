@@ -35,6 +35,7 @@ def get_user(username):
     return pages.user.get_user(username)
 
 
+
 # Event section
 @app.route('/event/<username>/', methods=['POST', 'GET'])
 def event(username):
