@@ -23,7 +23,24 @@ def event(username):
             }), 404
     elif request.method == 'POST':
         if session.get('user'):
-            return jsonify({'user': str(session.get('user'))})
+            data = request.json['data']
+            if request.json['type'] == 'create':
+                event = create_event(
+                    name = data['name'],
+                    description = data['description'],
+                    data = data['date'],
+                    fisic_ball = data['fisic_ball'],
+                    owner = session.get('user')
+                )
+                return jsonify({
+                    'type': 'sucess',
+                    'data': dict(
+                        name=event.name,
+                        description=event.description,
+                        date=str(event.date),
+                        fisic_ball=event.fisic_ball
+                    )
+                })
         else:
             return jsonify({
                 'type': 'error',
