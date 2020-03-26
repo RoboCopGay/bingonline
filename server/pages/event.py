@@ -25,12 +25,16 @@ def event(username):
         if session.get('user'):
             data = request.json['data']
             if request.json['type'] == 'create':
+
+                owner = User.query.filter_by(username=session.get('user').username).first()
+                print(f'\n\n\n\n{"-"*5}{owner}{"-"*5}\n\n\n')
+
                 event = create_event(
                     name = data['name'],
                     description = data['description'],
-                    data = data['date'],
+                    date = data['date'],
                     fisic_ball = data['fisic_ball'],
-                    owner = session.get('user')
+                    owner = owner
                 )
                 return jsonify({
                     'type': 'sucess',
