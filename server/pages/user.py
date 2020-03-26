@@ -96,10 +96,6 @@ def confirm_user_email(token):
                     password = data['password'],
                     address = data['address']
                 )
-
-                if user and User.query.filter_by(email=data['email'], username=data['username']).first():
-                    db.session.add(user)
-                    db.session.commit()
             except:
                 return jsonify({
                         'type': 'error',
