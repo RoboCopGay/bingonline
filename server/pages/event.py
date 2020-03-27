@@ -3,8 +3,7 @@ from database.models import *
 
 from .user import session
 
-def event(username):
-    user = User.query.filter_by(username=username).first()
+def event(user):
     if request.method == 'GET':
         if user:
             return jsonify({
@@ -24,11 +23,9 @@ def event(username):
     elif request.method == 'POST':
         if session.get('user'):
             data = request.json['data']
+
             if request.json['type'] == 'create':
-
                 owner = User.query.filter_by(username=session.get('user').username).first()
-                print(f'\n\n\n\n{"-"*5}{owner}{"-"*5}\n\n\n')
-
                 event = create_event(
                     name = data['name'],
                     description = data['description'],
@@ -36,6 +33,7 @@ def event(username):
                     fisic_ball = data['fisic_ball'],
                     owner = owner
                 )
+
                 return jsonify({
                     'type': 'sucess',
                     'data': dict(
