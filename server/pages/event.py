@@ -48,3 +48,12 @@ def event(user):
                 'type': 'error',
                 'data': 'You need to be logged to acess this page!'
             }), 403
+
+def prize(user, event):
+    return jsonify({
+        'type': 'sucess',
+        'data': {
+            'user': str(user),
+            'event': str(event)
+        }
+    })
