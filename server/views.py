@@ -43,9 +43,9 @@ def event(username):
     if user:
         if request.json and request.json['type'] == 'add_prize':
             event_id = request.args.get('event_id', default=False, type=int)
-            event = Event.query.filter_by(id=event_id).first() if event_id else None
+            event = Event.query.filter_by(id=event_id, owner=user).first() if event_id else None
             if event:
-                return pages.event.prize(user, event)
+                return pages.event.prize(event)
             else:
                 return jsonify({
                     'type': 'error',
