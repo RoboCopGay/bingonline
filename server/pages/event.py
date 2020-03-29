@@ -49,11 +49,12 @@ def event(user):
                 'data': 'You need to be logged to acess this page!'
             }), 403
 
-def prize(user, event):
-    return jsonify({
-        'type': 'sucess',
-        'data': {
-            'user': str(user),
-            'event': str(event)
-        }
-    })
+def prize(event, images = None):
+    data = request.json['data']
+    if images:
+        create_prize(
+            name = data['name'],
+            description = data['description'],
+            images = images,
+            event = event
+        )
